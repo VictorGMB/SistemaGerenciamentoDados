@@ -1,1 +1,32 @@
+# Visual Studio
 .vs/
+*.suo
+*.user
+*.resharper
+*.aps
+*.bsc
+*.ilk
+*.obj
+*.pdb
+*.tlb
+*.tlh
+*.tmp
+*.bak
+*.sbr
+*.lib
+*.nupkg
+*.lock.json
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+ARM/
+bin/
+obj/
+# Nuget packages
+packages/
+# Test results
+TestResults/
+# Visual Studio Code (if you use it)
+.vscode/
