@@ -33,10 +33,9 @@ public class Banco
     // Método público para obter a conexão com o banco de dados
     public static MySqlConnection GetConexao()
     {
-        if (CONEXAO == null || CONEXAO.State == ConnectionState.Closed)
-        {
-            Conectar();
-        }
-        return CONEXAO;
+        string connectionString = $"Server={HOST};Port={PORT};Database={DB};User={USER};Password={PWD};";
+        var conexao = new MySqlConnection(connectionString);
+        conexao.Open();
+        return conexao;
     }
 }
