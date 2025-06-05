@@ -17,6 +17,8 @@
         {
             menuStrip1 = new MenuStrip();
             menuItemArquivo = new ToolStripMenuItem();
+            sairToolStripMenuItem = new ToolStripMenuItem();
+            logToolStripMenuItem = new ToolStripMenuItem();
             menuItemTabelas = new ToolStripMenuItem();
             menuItemVenda = new ToolStripMenuItem();
             menuItemCliente = new ToolStripMenuItem();
@@ -24,7 +26,6 @@
             menuItemProduto = new ToolStripMenuItem();
             menuItemFornecedor = new ToolStripMenuItem();
             lblUser = new Label();
-            sairToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -39,10 +40,24 @@
             // 
             // menuItemArquivo
             // 
-            menuItemArquivo.DropDownItems.AddRange(new ToolStripItem[] { sairToolStripMenuItem });
+            menuItemArquivo.DropDownItems.AddRange(new ToolStripItem[] { sairToolStripMenuItem, logToolStripMenuItem });
             menuItemArquivo.Name = "menuItemArquivo";
             menuItemArquivo.Size = new Size(61, 20);
             menuItemArquivo.Text = "Arquivo";
+            // 
+            // sairToolStripMenuItem
+            // 
+            sairToolStripMenuItem.Name = "sairToolStripMenuItem";
+            sairToolStripMenuItem.Size = new Size(180, 22);
+            sairToolStripMenuItem.Text = "Sair";
+            sairToolStripMenuItem.Click += sairToolStripMenuItem_Click;
+            // 
+            // logToolStripMenuItem
+            // 
+            logToolStripMenuItem.Name = "logToolStripMenuItem";
+            logToolStripMenuItem.Size = new Size(180, 22);
+            logToolStripMenuItem.Text = "Log";
+            logToolStripMenuItem.Click += logToolStripMenuItem_Click;
             // 
             // menuItemTabelas
             // 
@@ -94,13 +109,6 @@
             lblUser.Size = new Size(0, 15);
             lblUser.TabIndex = 2;
             // 
-            // sairToolStripMenuItem
-            // 
-            sairToolStripMenuItem.Name = "sairToolStripMenuItem";
-            sairToolStripMenuItem.Size = new Size(180, 22);
-            sairToolStripMenuItem.Text = "Sair";
-            sairToolStripMenuItem.Click += sairToolStripMenuItem_Click;
-            // 
             // FrmPrincipal
             // 
             ClientSize = new Size(961, 600);
@@ -126,5 +134,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemFornecedor;
         private Label lblUser;
         private ToolStripMenuItem sairToolStripMenuItem;
+        private ToolStripMenuItem logToolStripMenuItem;
     }
 }
