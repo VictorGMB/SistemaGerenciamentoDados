@@ -30,6 +30,9 @@
             BtnAtualizar = new Button();
             LstClientes = new ListBox();
             panel1 = new Panel();
+            label5 = new Label();
+            TxtImport = new TextBox();
+            BtnImport = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -152,9 +155,38 @@
             panel1.Size = new Size(474, 136);
             panel1.TabIndex = 3;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(590, 28);
+            label5.Name = "label5";
+            label5.Size = new Size(123, 15);
+            label5.TabIndex = 10;
+            label5.Text = "Importar arquivo CSV:";
+            // 
+            // TxtImport
+            // 
+            TxtImport.Location = new Point(590, 57);
+            TxtImport.Name = "TxtImport";
+            TxtImport.Size = new Size(318, 23);
+            TxtImport.TabIndex = 11;
+            // 
+            // BtnImport
+            // 
+            BtnImport.Location = new Point(590, 89);
+            BtnImport.Name = "BtnImport";
+            BtnImport.Size = new Size(75, 23);
+            BtnImport.TabIndex = 12;
+            BtnImport.Text = "Importar";
+            BtnImport.UseVisualStyleBackColor = true;
+            BtnImport.Click += btnImport_Click;
+            // 
             // FrmCliente
             // 
-            ClientSize = new Size(568, 627);
+            ClientSize = new Size(936, 627);
+            Controls.Add(BtnImport);
+            Controls.Add(TxtImport);
+            Controls.Add(label5);
             Controls.Add(BtnAtualizar);
             Controls.Add(BtnExcluir);
             Controls.Add(BtnCadastrar);
@@ -166,6 +198,7 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -183,5 +216,8 @@
         private Button BtnAtualizar;
         private ListBox LstClientes;
         private Panel panel1;
+        private Label label5;
+        private TextBox TxtImport;
+        private Button BtnImport;
     }
 }

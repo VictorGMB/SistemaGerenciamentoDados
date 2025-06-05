@@ -1,7 +1,9 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using MySqlX.XDevAPI;
 
 namespace projeto_banco_de_dados
 {
@@ -164,6 +166,45 @@ namespace projeto_banco_de_dados
         }
         private void LstClientes_SelectedIndexChanged(object sender, EventArgs e)
         {
+        }
+
+        public static void ImportarDadosCliente(string caminhoArquivo)
+        {
+            MySqlConnection conexao = Banco.GetConexao();
+
+            StreamReader sr = new StreamReader(caminhoArquivo);
+
+            while (!sr.EndOfStream)
+            {
+                string[] dados = sr.ReadLine().Split(';');
+                string sql = "INSERT INTO cliente (nome, email, cpf) VALUES (@nome, @email, @cpf)";
+
+                MySqlCommand cmd = new MySqlCommand(sql, conexao);
+                cmd.Parameters.AddWithValue("@nome", dados[0]);
+                cmd.Parameters.AddWithValue("@email", dados[1]);
+                cmd.Parameters.AddWithValue("@cpf", dados[2]);
+                cmd.ExecuteNonQuery();
+            }
+
+            sr.Close();
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            if (usuarioAtual.Tipo.Contains("C"))
+            {
+                ImportarDadosCliente(TxtImport.Text);
+                LstClientes.DataSource = null; // Reseta a fonte de dados
+                Cliente cliente = new Cliente();
+                LstClientes.DataSource = cliente.ReadAll();
+                atividade = "CREATE";
+                InsertLog();
+            }
+            else
+            {
+                MessageBox.Show("Permissão negada.",
+                    "Acesso Restrito", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }
