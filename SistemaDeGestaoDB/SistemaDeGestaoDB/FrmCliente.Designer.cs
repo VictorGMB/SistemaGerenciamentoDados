@@ -28,9 +28,10 @@
             BtnCadastrar = new Button();
             BtnExcluir = new Button();
             BtnAtualizar = new Button();
-            LstClientes = new ListBox();
             panel1 = new Panel();
+            dgvCliente = new DataGridView();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCliente).BeginInit();
             SuspendLayout();
             // 
             // TxtNome
@@ -125,17 +126,6 @@
             BtnAtualizar.Text = "Atualizar";
             BtnAtualizar.Click += BtnAtualizar_Click;
             // 
-            // LstClientes
-            // 
-            LstClientes.FormattingEnabled = true;
-            LstClientes.ItemHeight = 15;
-            LstClientes.Location = new Point(48, 190);
-            LstClientes.Name = "LstClientes";
-            LstClientes.Size = new Size(474, 364);
-            LstClientes.TabIndex = 9;
-            LstClientes.Click += LstClientes_Click;
-            LstClientes.SelectedIndexChanged += LstClientes_SelectedIndexChanged;
-            // 
             // panel1
             // 
             panel1.BorderStyle = BorderStyle.FixedSingle;
@@ -152,19 +142,28 @@
             panel1.Size = new Size(474, 136);
             panel1.TabIndex = 3;
             // 
+            // dgvCliente
+            // 
+            dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCliente.Location = new Point(48, 190);
+            dgvCliente.Name = "dgvCliente";
+            dgvCliente.Size = new Size(474, 364);
+            dgvCliente.TabIndex = 10;
+            // 
             // FrmCliente
             // 
             ClientSize = new Size(568, 627);
+            Controls.Add(dgvCliente);
             Controls.Add(BtnAtualizar);
             Controls.Add(BtnExcluir);
             Controls.Add(BtnCadastrar);
             Controls.Add(panel1);
-            Controls.Add(LstClientes);
             Name = "FrmCliente";
             Text = "Cadastro de Clientes";
             Load += FrmCliente_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCliente).EndInit();
             ResumeLayout(false);
         }
 
@@ -181,7 +180,7 @@
         private Button BtnCadastrar;
         private Button BtnExcluir;
         private Button BtnAtualizar;
-        private ListBox LstClientes;
         private Panel panel1;
+        private DataGridView dgvCliente;
     }
 }

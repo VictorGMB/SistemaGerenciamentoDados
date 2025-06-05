@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 
 namespace projeto_banco_de_dados
@@ -47,8 +48,7 @@ namespace projeto_banco_de_dados
 
                     if (cliente.Create())
                     {
-                        LstClientes.DataSource = null; // Reseta a fonte de dados
-                        LstClientes.DataSource = cliente.ReadAll(); // Atualiza a lista de clientes
+                        dgvCliente.DataSource = ObterDataTableCliente(); // Atualiza o DataGridView
                         atividade = "CREATE";
                         InsertLog();
                     }
@@ -71,27 +71,31 @@ namespace projeto_banco_de_dados
             {
                 try
                 {
-                    if (LstClientes.SelectedItem != null)
+                    if (dgvCliente.CurrentRow != null && dgvCliente.CurrentRow.Index >= 0)
                     {
-                        Cliente clienteSelecionado = (Cliente)LstClientes.SelectedItem;
+                        int idCliente = Convert.ToInt32(dgvCliente.CurrentRow.Cells["idCliente"].Value);
+                        Cliente clienteSelecionado = Cliente.ReadByID(idCliente);
 
-                        DialogResult resultado = MessageBox.Show($"Tem certeza que deseja excluir '{clienteSelecionado.Nome}'?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                        if (resultado == DialogResult.Yes)
+                        if (clienteSelecionado != null)
                         {
-                            bool excluido = clienteSelecionado.Delete();
+                            DialogResult resultado = MessageBox.Show(
+                                $"Tem certeza que deseja excluir '{clienteSelecionado.Nome}'?",
+                                "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-                            if (excluido)
+                            if (resultado == DialogResult.Yes)
                             {
-                                LstClientes.DataSource = null; // Reseta a fonte de dados
-                                Cliente cliente = new Cliente();
-                                LstClientes.DataSource = cliente.ReadAll();
-                                atividade = "DELETE";
-                                InsertLog();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Erro ao excluir o cliente.");
+                                bool excluido = clienteSelecionado.Delete();
+
+                                if (excluido)
+                                {
+                                    dgvCliente.DataSource = ObterDataTableCliente(); // Atualiza o DataGridView
+                                    atividade = "DELETE";
+                                    InsertLog();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Erro ao excluir o cliente.");
+                                }
                             }
                         }
                     }
@@ -114,20 +118,23 @@ namespace projeto_banco_de_dados
             {
                 try
                 {
-                    if (LstClientes.SelectedItem != null)
+                    if (dgvCliente.CurrentRow != null && dgvCliente.CurrentRow.Index >= 0)
                     {
-                        Cliente clienteSelecionado = (Cliente)LstClientes.SelectedItem;
-                        clienteSelecionado.Nome = this.TxtNome.Text;
-                        clienteSelecionado.Email = this.TxtEmail.Text;
-                        clienteSelecionado.CPF = this.TxtCPF.Text;
+                        int idCliente = Convert.ToInt32(dgvCliente.CurrentRow.Cells["idCliente"].Value);
+                        Cliente clienteSelecionado = Cliente.ReadByID(idCliente);
 
-                        if (clienteSelecionado.Update())
+                        if (clienteSelecionado != null)
                         {
-                            LstClientes.DataSource = null; // Reseta a fonte de dados
-                            Cliente cliente = new Cliente();
-                            LstClientes.DataSource = cliente.ReadAll();
-                            atividade = "UPDATE";
-                            InsertLog();
+                            clienteSelecionado.Nome = this.TxtNome.Text;
+                            clienteSelecionado.Email = this.TxtEmail.Text;
+                            clienteSelecionado.CPF = this.TxtCPF.Text;
+
+                            if (clienteSelecionado.Update())
+                            {
+                                dgvCliente.DataSource = ObterDataTableCliente(); // Atualiza o DataGridView
+                                atividade = "UPDATE";
+                                InsertLog();
+                            }
                         }
                     }
                 }
@@ -146,24 +153,33 @@ namespace projeto_banco_de_dados
         private void FrmCliente_Load(object sender, EventArgs e)
         {
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Cliente cliente = new Cliente();
-            LstClientes.DataSource = cliente.ReadAll(); ;
+            dgvCliente.DataSource = ObterDataTableCliente();
         }
 
-        private void LstClientes_Click(object sender, EventArgs e)
+        private DataTable ObterDataTableCliente()
         {
-            if (LstClientes.SelectedItem != null)
+            DataTable dt = new DataTable();
+            using (var conexao = Banco.GetConexao())
             {
-                Cliente clienteSelecionado = (Cliente)LstClientes.SelectedItem;
-
-                this.TxtIdCliente.Text = clienteSelecionado.IdCliente.ToString();
-                this.TxtNome.Text = clienteSelecionado.Nome;
-                this.TxtEmail.Text = clienteSelecionado.Email;
-                this.TxtCPF.Text = clienteSelecionado.CPF;
+                string sql = "SELECT idCliente, nome, email, CPF FROM cliente ORDER BY nome;";
+                using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, conexao))
+                using (var da = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
             }
+            return dt;
         }
-        private void LstClientes_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void dgvCliente_SelectionChanged(object sender, EventArgs e)
         {
+            if (dgvCliente.CurrentRow != null && dgvCliente.CurrentRow.Index >= 0)
+            {
+                this.TxtIdCliente.Text = dgvCliente.CurrentRow.Cells["idCliente"].Value?.ToString();
+                this.TxtNome.Text = dgvCliente.CurrentRow.Cells["nome"].Value?.ToString();
+                this.TxtEmail.Text = dgvCliente.CurrentRow.Cells["email"].Value?.ToString();
+                this.TxtCPF.Text = dgvCliente.CurrentRow.Cells["CPF"].Value?.ToString();
+            }
         }
     }
 }

@@ -70,6 +70,14 @@ CREATE TABLE IF NOT EXISTS `Venda` (
     ON UPDATE CASCADE
 ) ENGINE = InnoDB;
 
+CREATE TABLE log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(30) NOT NULL,
+    tabela VARCHAR(30) NOT NULL,
+    atividade VARCHAR(20) NOT NULL,
+    data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Inserindo dados na tabela Fornecedor:
 INSERT INTO `Fornecedor` (`nome`, `CNPJ`) VALUES
 ('Tech Solutions Ltda', '10456789000199'),
