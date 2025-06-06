@@ -223,10 +223,10 @@
         private Label label2;
         private Label label3;
         private Label label4;
+        private ListBox LstClientes;
         private Button BtnCadastrar;
         private Button BtnExcluir;
         private Button BtnAtualizar;
-        private ListBox LstClientes;
         private Panel panel1;
         private Label label5;
         private TextBox TxtImport;

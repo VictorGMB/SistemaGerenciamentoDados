@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 using MySqlX.XDevAPI;
 using System.Data;
@@ -79,17 +80,18 @@ namespace projeto_banco_de_dados
             {
                 try
                 {
-                    if (LstClientes.SelectedItem != null)
+                    if (dgvCliente.CurrentRow != null && dgvCliente.CurrentRow.Index >= 0)
                     {
-                        Cliente clienteSelecionado = (Cliente)LstClientes.SelectedItem;
+                        int idCliente = Convert.ToInt32(dgvCliente.CurrentRow.Cells["idCliente"].Value);
+                        Cliente clienteSelecionado = Cliente.ReadByID(idCliente);
 
-                        DialogResult resultado = MessageBox.Show($"Tem certeza que deseja excluir '{clienteSelecionado.Nome}'?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                        if (resultado == DialogResult.Yes)
+                        if (clienteSelecionado != null)
                         {
-                            bool excluido = clienteSelecionado.Delete();
+                            DialogResult resultado = MessageBox.Show(
+                                $"Tem certeza que deseja excluir '{clienteSelecionado.Nome}'?",
+                                "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-                            if (excluido)
+                            if (resultado == DialogResult.Yes)
                             {
                                 LstClientes.DataSource = null; // Reseta a fonte de dados
                                 Cliente cliente = new Cliente();
@@ -123,14 +125,12 @@ namespace projeto_banco_de_dados
             {
                 try
                 {
-                    if (LstClientes.SelectedItem != null)
+                    if (dgvCliente.CurrentRow != null && dgvCliente.CurrentRow.Index >= 0)
                     {
-                        Cliente clienteSelecionado = (Cliente)LstClientes.SelectedItem;
-                        clienteSelecionado.Nome = this.TxtNome.Text;
-                        clienteSelecionado.Email = this.TxtEmail.Text;
-                        clienteSelecionado.CPF = this.TxtCPF.Text;
+                        int idCliente = Convert.ToInt32(dgvCliente.CurrentRow.Cells["idCliente"].Value);
+                        Cliente clienteSelecionado = Cliente.ReadByID(idCliente);
 
-                        if (clienteSelecionado.Update())
+                        if (clienteSelecionado != null)
                         {
                             LstClientes.DataSource = null; // Reseta a fonte de dados
                             Cliente cliente = new Cliente();
@@ -177,6 +177,20 @@ namespace projeto_banco_de_dados
         {
         }
 
+        private DataTable ObterDataTableCliente()
+        {
+            DataTable dt = new DataTable();
+            using (var conexao = Banco.GetConexao())
+            {
+                string sql = "SELECT idCliente, nome, email, CPF FROM cliente ORDER BY nome;";
+                using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, conexao))
+                using (var da = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+            }
+            return dt;
+        }
         public static void ImportarDadosCliente(string caminhoArquivo)
         {
             MySqlConnection conexao = Banco.GetConexao();
@@ -215,21 +229,6 @@ namespace projeto_banco_de_dados
                 MessageBox.Show("Permissão negada.",
                     "Acesso Restrito", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-
-        private DataTable ObterDataTableCliente()
-        {
-            DataTable dt = new DataTable();
-            using (var conexao = Banco.GetConexao())
-            {
-                string sql = "SELECT idCliente, nome, email, CPF FROM cliente ORDER BY nome;";
-                using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, conexao))
-                using (var da = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
-                {
-                    da.Fill(dt);
-                }
-            }
-            return dt;
         }
     }
 }
