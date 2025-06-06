@@ -19,6 +19,10 @@ namespace projeto_banco_de_dados
             InitializeComponent();
             usuarioAtual = usuario;
             tabela = "cliente";
+            LstClientes.DataSource = null;
+            Cliente cliente = new Cliente();
+            LstClientes.DataSource = cliente.ReadAll();
+            DataManager.AtualizarClientes(LstClientes);
         }
 
         public bool InsertLog()

@@ -23,6 +23,10 @@ namespace projeto_banco_de_dados
             InitializeComponent();
             usuarioAtual = usuario;
             tabela = "funcionario";
+            LstFuncionarios.DataSource = null; // Reseta a fonte de dados
+            Funcionario funcionario = new Funcionario();
+            LstFuncionarios.DataSource = funcionario.ReadAll();
+            DataManager.AtualizarFuncionarios(LstFuncionarios);
         }
 
         public bool InsertLog()

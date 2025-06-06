@@ -23,6 +23,10 @@ namespace projeto_banco_de_dados
             InitializeComponent();
             usuarioAtual = usuario;
             tabela = "fornecedor";
+            LstFornecedores.DataSource = null; // Reseta a fonte de dados
+            Fornecedor fornecedor = new Fornecedor();
+            LstFornecedores.DataSource = fornecedor.ReadAll();
+            DataManager.AtualizarFornecedores(LstFornecedores);
         }
 
         public bool InsertLog()

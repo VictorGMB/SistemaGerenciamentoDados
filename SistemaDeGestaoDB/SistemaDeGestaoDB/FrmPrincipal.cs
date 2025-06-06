@@ -1,7 +1,10 @@
 using MySql.Data.MySqlClient;
-using Mysqlx.Crud;
 using System;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace projeto_banco_de_dados
 {
@@ -102,6 +105,123 @@ namespace projeto_banco_de_dados
             FrmLog frmLog = new FrmLog();
             frmLog.MdiParent = this;
             frmLog.Show();
+        }
+
+        public void ExportarTodosPDF()
+        {
+            PrintDocument printDoc = new PrintDocument();
+            printDoc.PrintPage += (sender, e) =>
+            {
+                Font fonte = new Font("Arial", 12);
+                float x = 50, y = 50;
+
+                e.Graphics.DrawString("Relatório de Dados", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                e.Graphics.DrawString("------------------------------------------------------------------------", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                e.Graphics.DrawString("Tabela Clientes", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                foreach (var item in DataManager.Clientes)
+                {
+                    e.Graphics.DrawString(item, fonte, Brushes.Black, x, y);
+                    y += 20;
+                }
+
+                e.Graphics.DrawString("------------------------------------------------------------------------", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                e.Graphics.DrawString("Tabela Fornecedores", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                foreach (var item in DataManager.Fornecedores)
+                {
+                    e.Graphics.DrawString(item, fonte, Brushes.Black, x, y);
+                    y += 20;
+                }
+
+                e.Graphics.DrawString("------------------------------------------------------------------------", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                e.Graphics.DrawString("Tabela Produtos", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                foreach (var item in DataManager.Produtos)
+                {
+                    e.Graphics.DrawString(item, fonte, Brushes.Black, x, y);
+                    y += 20;
+                }
+
+                e.Graphics.DrawString("------------------------------------------------------------------------", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                e.Graphics.DrawString("Tabela Funcionarios", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                foreach (var item in DataManager.Funcionarios)
+                {
+                    e.Graphics.DrawString(item, fonte, Brushes.Black, x, y);
+                    y += 20;
+                }
+
+                e.Graphics.DrawString("------------------------------------------------------------------------", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                e.Graphics.DrawString("Tabela Vendas", fonte, Brushes.Black, x, y);
+                y += 30;
+
+                foreach (var item in DataManager.Vendas)
+                {
+                    e.Graphics.DrawString(item, fonte, Brushes.Black, x, y);
+                    y += 20;
+                }
+            };
+
+            PrintDialog printDialog = new PrintDialog();
+            printDialog.Document = printDoc;
+            printDialog.PrinterSettings.PrinterName = "Microsoft Print to PDF";
+
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                printDoc.Print();
+            }
+        }
+        private void exportarPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmFornecedor frmFornecedor = new FrmFornecedor(usuarioAtual);
+            frmFornecedor.MdiParent = this;
+            frmFornecedor.Hide();
+
+            FrmFuncionario frmFuncionario = new FrmFuncionario(usuarioAtual);
+            frmFuncionario.MdiParent = this;
+            frmFuncionario.Hide();
+
+            FrmProduto frmProduto = new FrmProduto(usuarioAtual);
+            frmProduto.MdiParent = this;
+            frmProduto.Hide();
+
+            FrmVenda frmVenda = new FrmVenda(usuarioAtual);
+            frmVenda.MdiParent = this;
+            frmVenda.Hide();
+
+            FrmCliente frmCliente = new FrmCliente(usuarioAtual);
+            frmCliente.MdiParent = this;
+            frmCliente.Hide();
+
+            ExportarTodosPDF();
+
+            frmFornecedor.Close();
+            frmFuncionario.Close();
+            frmProduto.Close();
+            frmVenda.Close();
+            frmCliente.Close();
+        }
+
+        private void criarBackupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Banco.CriarBackup();
         }
     }
 }

@@ -23,6 +23,9 @@ namespace projeto_banco_de_dados
             InitializeComponent();
             usuarioAtual = usuario;
             tabela = "venda";
+            Venda venda = new Venda();
+            LstVendas.DataSource = venda.ReadAll();
+            DataManager.AtualizarVendas(LstVendas);
         }
 
         public bool InsertLog()

@@ -19,6 +19,7 @@
             menuItemArquivo = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
             logToolStripMenuItem = new ToolStripMenuItem();
+            exportarPDFToolStripMenuItem = new ToolStripMenuItem();
             menuItemTabelas = new ToolStripMenuItem();
             menuItemVenda = new ToolStripMenuItem();
             menuItemCliente = new ToolStripMenuItem();
@@ -26,6 +27,8 @@
             menuItemProduto = new ToolStripMenuItem();
             menuItemFornecedor = new ToolStripMenuItem();
             lblUser = new Label();
+            criarBackupToolStripMenuItem = new ToolStripMenuItem();
+            restaurarBancoToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -40,7 +43,7 @@
             // 
             // menuItemArquivo
             // 
-            menuItemArquivo.DropDownItems.AddRange(new ToolStripItem[] { sairToolStripMenuItem, logToolStripMenuItem });
+            menuItemArquivo.DropDownItems.AddRange(new ToolStripItem[] { sairToolStripMenuItem, logToolStripMenuItem, exportarPDFToolStripMenuItem, criarBackupToolStripMenuItem, restaurarBancoToolStripMenuItem });
             menuItemArquivo.Name = "menuItemArquivo";
             menuItemArquivo.Size = new Size(61, 20);
             menuItemArquivo.Text = "Arquivo";
@@ -58,6 +61,13 @@
             logToolStripMenuItem.Size = new Size(180, 22);
             logToolStripMenuItem.Text = "Log";
             logToolStripMenuItem.Click += logToolStripMenuItem_Click;
+            // 
+            // exportarPDFToolStripMenuItem
+            // 
+            exportarPDFToolStripMenuItem.Name = "exportarPDFToolStripMenuItem";
+            exportarPDFToolStripMenuItem.Size = new Size(180, 22);
+            exportarPDFToolStripMenuItem.Text = "Exportar PDF";
+            exportarPDFToolStripMenuItem.Click += exportarPDFToolStripMenuItem_Click;
             // 
             // menuItemTabelas
             // 
@@ -109,6 +119,19 @@
             lblUser.Size = new Size(0, 15);
             lblUser.TabIndex = 2;
             // 
+            // criarBackupToolStripMenuItem
+            // 
+            criarBackupToolStripMenuItem.Name = "criarBackupToolStripMenuItem";
+            criarBackupToolStripMenuItem.Size = new Size(180, 22);
+            criarBackupToolStripMenuItem.Text = "Criar Backup";
+            criarBackupToolStripMenuItem.Click += criarBackupToolStripMenuItem_Click;
+            // 
+            // restaurarBancoToolStripMenuItem
+            // 
+            restaurarBancoToolStripMenuItem.Name = "restaurarBancoToolStripMenuItem";
+            restaurarBancoToolStripMenuItem.Size = new Size(180, 22);
+            restaurarBancoToolStripMenuItem.Text = "Restaurar Banco";
+            // 
             // FrmPrincipal
             // 
             ClientSize = new Size(961, 600);
@@ -135,5 +158,8 @@
         private Label lblUser;
         private ToolStripMenuItem sairToolStripMenuItem;
         private ToolStripMenuItem logToolStripMenuItem;
+        private ToolStripMenuItem exportarPDFToolStripMenuItem;
+        private ToolStripMenuItem criarBackupToolStripMenuItem;
+        private ToolStripMenuItem restaurarBancoToolStripMenuItem;
     }
 }

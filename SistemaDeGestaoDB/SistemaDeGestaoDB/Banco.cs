@@ -39,4 +39,54 @@ public class Banco
         }
         return CONEXAO;
     }
+
+    public static void CriarBackup()
+    {
+        try
+        {
+            string command = $"mysqldump -h {Banco.HOST} -u {Banco.USER} -p{Banco.PWD} --databases {Banco.DB} > C:\\Users\\danie\\Downloads\\backup.sql";
+
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("cmd.exe", "/c " + command);
+            psi.RedirectStandardOutput = true;
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            process.StartInfo = psi;
+            process.Start();
+            process.WaitForExit();
+
+            MessageBox.Show("Backup realizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Erro ao realizar backup: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    public static void Restaurar()
+    {
+        try
+        {
+            string backupFile = "C:\\Users\\danie\\Downloads\\backup.sql";
+
+            string command = $"mysql --user={Banco.USER} --password=sua_senha --host=seu_servidor seu_banco < \"{backupFile}\"";
+
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("cmd.exe", "/c " + command);
+            psi.RedirectStandardOutput = true;
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            process.StartInfo = psi;
+            process.Start();
+            process.WaitForExit();
+
+            MessageBox.Show("Restauração realizada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Erro ao restaurar backup: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
 }

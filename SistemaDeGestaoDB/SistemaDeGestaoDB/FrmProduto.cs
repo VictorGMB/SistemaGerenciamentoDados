@@ -23,6 +23,10 @@ namespace projeto_banco_de_dados
             InitializeComponent();
             usuarioAtual = usuario;
             tabela = "produto";
+            LstProdutos.DataSource = null;
+            Produto produto = new Produto();
+            LstProdutos.DataSource = produto.ReadAll();
+            DataManager.AtualizarProdutos(LstProdutos);
         }
 
         public bool InsertLog()
