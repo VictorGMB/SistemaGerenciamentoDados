@@ -33,7 +33,9 @@
             label5 = new Label();
             TxtImport = new TextBox();
             BtnImport = new Button();
+            dgvCliente = new DataGridView();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCliente).BeginInit();
             SuspendLayout();
             // 
             // TxtNome
@@ -181,9 +183,18 @@
             BtnImport.UseVisualStyleBackColor = true;
             BtnImport.Click += btnImport_Click;
             // 
+            // dgvCliente
+            // 
+            dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCliente.Location = new Point(579, 190);
+            dgvCliente.Name = "dgvCliente";
+            dgvCliente.Size = new Size(506, 364);
+            dgvCliente.TabIndex = 13;
+            // 
             // FrmCliente
             // 
-            ClientSize = new Size(936, 627);
+            ClientSize = new Size(1097, 627);
+            Controls.Add(dgvCliente);
             Controls.Add(BtnImport);
             Controls.Add(TxtImport);
             Controls.Add(label5);
@@ -197,6 +208,7 @@
             Load += FrmCliente_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCliente).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -219,5 +231,6 @@
         private Label label5;
         private TextBox TxtImport;
         private Button BtnImport;
+        private DataGridView dgvCliente;
     }
 }

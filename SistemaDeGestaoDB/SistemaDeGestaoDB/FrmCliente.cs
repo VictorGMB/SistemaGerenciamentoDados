@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using MySqlX.XDevAPI;
+using System.Data;
 
 namespace projeto_banco_de_dados
 {
@@ -55,6 +56,7 @@ namespace projeto_banco_de_dados
                     {
                         LstClientes.DataSource = null; // Reseta a fonte de dados
                         LstClientes.DataSource = cliente.ReadAll(); // Atualiza a lista de clientes
+                        dgvCliente.DataSource = ObterDataTableCliente();
                         atividade = "CREATE";
                         InsertLog();
                     }
@@ -92,6 +94,7 @@ namespace projeto_banco_de_dados
                                 LstClientes.DataSource = null; // Reseta a fonte de dados
                                 Cliente cliente = new Cliente();
                                 LstClientes.DataSource = cliente.ReadAll();
+                                dgvCliente.DataSource = ObterDataTableCliente();
                                 atividade = "DELETE";
                                 InsertLog();
                             }
@@ -132,6 +135,7 @@ namespace projeto_banco_de_dados
                             LstClientes.DataSource = null; // Reseta a fonte de dados
                             Cliente cliente = new Cliente();
                             LstClientes.DataSource = cliente.ReadAll();
+                            dgvCliente.DataSource = ObterDataTableCliente();
                             atividade = "UPDATE";
                             InsertLog();
                         }
@@ -153,7 +157,8 @@ namespace projeto_banco_de_dados
         {
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Cliente cliente = new Cliente();
-            LstClientes.DataSource = cliente.ReadAll(); ;
+            LstClientes.DataSource = cliente.ReadAll();
+            dgvCliente.DataSource = ObterDataTableCliente();
         }
 
         private void LstClientes_Click(object sender, EventArgs e)
@@ -201,6 +206,7 @@ namespace projeto_banco_de_dados
                 LstClientes.DataSource = null; // Reseta a fonte de dados
                 Cliente cliente = new Cliente();
                 LstClientes.DataSource = cliente.ReadAll();
+                dgvCliente.DataSource = ObterDataTableCliente();
                 atividade = "CREATE";
                 InsertLog();
             }
@@ -209,6 +215,21 @@ namespace projeto_banco_de_dados
                 MessageBox.Show("Permissão negada.",
                     "Acesso Restrito", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private DataTable ObterDataTableCliente()
+        {
+            DataTable dt = new DataTable();
+            using (var conexao = Banco.GetConexao())
+            {
+                string sql = "SELECT idCliente, nome, email, CPF FROM cliente ORDER BY nome;";
+                using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, conexao))
+                using (var da = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+            }
+            return dt;
         }
     }
 }
